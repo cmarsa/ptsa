@@ -101,13 +101,10 @@ def main():
         # randomly generate the date when a user would have joined
         join_date = pd.Timestamp(year_joined.iloc[idx].year_joined) + \
                     pd.Timedelta(str(np.random.randint(0, 365)) + ' days')
-        print(join_date, type(join_date))
         join_date = min(join_date, pd.Timestamp('2018-06-01'))
-        print(join_date, type(join_date))
         # user should not receive emails or make donations before joining
-        print(rng, join_date)
-        print(type(rng), type(join_date))
-        user_rng = rng[rng.start_time > join_date]
+        user_rng = rng[rng.to_timestamp() > join_date]
+        print(rng.to_timestamp() > join_date)
         # user_rng = rng
         if len(user_rng) < 1:
             continue
