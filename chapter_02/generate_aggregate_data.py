@@ -80,7 +80,7 @@ def produce_donations(period_rng, user_behaviour, num_emails, use_id, user_join_
         donations = donations.append(pd.DataFrame({'user': [use_id],
                                                    'amount': [donation_amounts[user_gives_idx + \
                                                               np.random.binomial(1, 0.3)]],
-                                                    'timestamp': [str(period_rng[times[n]].start_time + random_weekly_time_delta())]}))
+                                                   'timestamp': [str(period_rng[times[n]].start_time + random_weekly_time_delta())]}))
     if donations.shape[0] > 0:
         donations = donations[donations.amount != 0]
     return donations
@@ -98,19 +98,18 @@ def main():
                               'amount': [],
                               'timestamp': []})
     for idx in range(year_joined.shape[0]):
+        print(f'{idx:03}/{year_joined.shape[0]}', end = '\r')
         # randomly generate the date when a user would have joined
         join_date = pd.Timestamp(year_joined.iloc[idx].year_joined) + \
                     pd.Timedelta(str(np.random.randint(0, 365)) + ' days')
         join_date = min(join_date, pd.Timestamp('2018-06-01'))
         # user should not receive emails or make donations before joining
         user_rng = rng[rng.to_timestamp() > join_date]
-        print(rng.to_timestamp() > join_date)
-        # user_rng = rng
         if len(user_rng) < 1:
             continue
         info = user_behaviours[idx](user_rng)
         if len(info) == len(user_rng):
-            emails = emails.append(pd.DataFrame({'usr': [idx] * len(info),
+            emails = emails.append(pd.DataFrame({'user': [idx] * len(info),
                                                  'week': [str(r.start_time) for r in user_rng],
                                                  'emails_opened': info}))
         donations = donations.append(produce_donations(user_rng, user_behaviours[idx],
