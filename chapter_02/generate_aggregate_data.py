@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # generate_aggregate_data.py
-
 import pdb
 import numpy as np
 import pandas as pd
