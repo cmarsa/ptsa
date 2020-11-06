@@ -1,6 +1,7 @@
 # handling_missing_data_labor_bureau.r
 # load libraries
 library(tidyverse)
+library(data.table)
 library(readxl)
 library(zoo)
 
